@@ -1,39 +1,179 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Template Dinámico</title>
+    <title>Ficha Técnica de la Planta</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; background-color: #f4f4f9; }
-        .card { background: white; padding: 30px; border-radius: 10px; display: inline-block; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        h1 { color: #333; }
-        p { color: #666; font-size: 1.2em; }
+        :root {
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #2c3e50;
+            --text-muted: #7f8c8d;
+            --accent-green: #27ae60;
+            --accent-red: #c0392b;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .card {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 450px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .card-header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-id {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-top: 8px;
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        .info-group {
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+        }
+
+        .info-group:last-child {
+            margin-bottom: 0;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .value {
+            font-size: 1.1rem;
+            font-weight: 500;
+            word-wrap: break-word;
+        }
+
+        /* Estado de Infección Dinámico */
+        .status-box {
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        .status-safe {
+            background-color: #e8f5e9;
+            color: var(--accent-green);
+            border: 1px solid #c8e6c9;
+        }
+
+        .status-infected {
+            background-color: #ffebee;
+            color: var(--accent-red);
+            border: 1px solid #ffcdd2;
+        }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <!-- Los elementos con ID serán modificados por JavaScript -->
-        <h1 id="saludo">¡Hola, Invitado!</h1>
-        <p id="mensaje">Bienvenido a mi sitio web template.</p>
+        <div class="card-header">
+            <h1>Ficha de Monitoreo</h1>
+            <span class="badge-id" id="plant-id">ID: S/N</span>
+        </div>
+        
+        <div class="card-body">
+            <div class="info-group">
+                <span class="label">Origen / Sacada de</span>
+                <div class="value" id="plant-origen">No especificado</div>
+            </div>
+
+            <div class="info-group">
+                <span class="label">Consorcio</span>
+                <div class="value" id="plant-consorcio">No especificado</div>
+            </div>
+
+            <div class="info-group">
+                <span class="label">Descripción</span>
+                <div class="value" id="plant-descripcion">Sin descripción disponible.</div>
+            </div>
+
+            <div class="info-group">
+                <span class="label">Estado Sanitario</span>
+                <div id="plant-estado" class="status-box">Cargando estado...</div>
+            </div>
+        </div>
     </div>
 
     <script>
-        // 1. Capturar los parámetros de la URL (?nombre=Valor&rol=Valor)
+        // 1. Leer parámetros de la URL
         const params = new URLSearchParams(window.location.search);
         
-        // 2. Obtener los valores específicos
-        const nombreUsuario = params.get('nombre');
-        const rolUsuario = params.get('rol');
+        const id = params.get('id');
+        const descripcion = params.get('desc');
+        const consorcio = params.get('cons');
+        const origen = params.get('ori');
+        const infectada = params.get('infect'); // Espera "si" o "no"
 
-        // 3. Pintar los valores en el HTML si existen en la URL
-        if (nombreUsuario) {
-            document.getElementById('saludo').textContent = `¡Hola, ${nombreUsuario}!`;
-        }
+        // 2. Inyectar datos en el HTML si existen
+        if (id) document.getElementById('plant-id').textContent = `ID: ${id}`;
+        if (origen) document.getElementById('plant-origen').textContent = origen;
+        if (consorcio) document.getElementById('plant-consorcio').textContent = consorcio;
+        if (descripcion) document.getElementById('plant-descripcion').textContent = descripcion;
+
+        // 3. Lógica lógica del estado de infección
+        const estadoElemento = document.getElementById('plant-estado');
         
-        if (rolUsuario) {
-            document.getElementById('mensaje').textContent = `Tu rol actual es: ${rolUsuario}.`;
+        if (infectada && infectada.toLowerCase() === 'si') {
+            estadoElemento.textContent = "⚠️ INFECTADA";
+            estadoElemento.className = "status-box status-infected";
+        } else if (infectada && infectada.toLowerCase() === 'no') {
+            estadoElemento.textContent = "✅ SANA / LIBRE DE INFECCIÓN";
+            estadoElemento.className = "status-box status-safe";
+        } else {
+            estadoElemento.textContent = "No determinado";
+            estadoElemento.style.backgroundColor = "#f1f3f5";
+            estadoElemento.style.color = "#6c757d";
         }
     </script>
 </body>
