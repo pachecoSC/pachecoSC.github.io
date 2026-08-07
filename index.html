@@ -131,11 +131,11 @@
                 <div class="value" id="plant-consorcio">❌</div>
             </div>
             <div class="info-group">
-                <span class="label">Pre-infection Height</span>
+                <span class="label">Pre-infection Height(cm) </span>
                 <div class="value" id="plant-altura">No especificada</div>
             </div>
             <div class="info-group">
-                <span class="label">Pre-infection Functional Leaves</span>
+                <span class="label">Pre-infection Functional Leaves(cm)</span>
                 <div class="value" id="plant-hojas">No especificada</div>
             </div>
             <div class="info-group">
@@ -168,17 +168,27 @@
         // 2. Inyectar datos en el HTML si existen
         if (id) document.getElementById('plant-id').textContent = `${id}`;
         if (consorcio) document.getElementById('plant-consorcio').textContent = consorcio;
-        if (descripcion) document.getElementById('plant-descripcion').textContent = descripcion;
+        // if (descripcion) document.getElementById('plant-descripcion').textContent = descripcion;
         if (altura) document.getElementById('plant-altura').textContent = altura;
-
-        // 3. Lógica lógica del estado de infección
+        //3. Lógica del enlace a drive
+        if (descripcion) {
+          descripcionElement.innerHTML = `
+            <a href="${descripcion}" target="_blank" rel="noopener noreferrer">
+              More details...
+            </a>
+          `;
+        } else {
+          descripcionElement.textContent = "not available.";
+        }
+        
+        // 4. Lógica del estado de infección
         const estadoElemento = document.getElementById('plant-estado');
 
         if (infectada && infectada.toLowerCase() === 'si') {
-            estadoElemento.textContent = "⚠️ INFECTADA";
+            estadoElemento.textContent = "⚠️ INFECTED";
             estadoElemento.className = "status-box status-infected";
         } else if (infectada && infectada.toLowerCase() === 'no') {
-            estadoElemento.textContent = "✅ SANA / LIBRE DE INFECCIÓN";
+            estadoElemento.textContent = "✅ HEALTHY / FUSARIUM FREE";
             estadoElemento.className = "status-box status-safe";
         } else {
             estadoElemento.textContent = "No determinado";
