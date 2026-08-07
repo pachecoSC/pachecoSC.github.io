@@ -81,7 +81,14 @@
         .label {
             font-size: 0.85rem;
             color: var(--text-muted);
-            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .measurement {
+            font-size: 0.85rem;
+            color: var(--text-muted);
             letter-spacing: 0.5px;
             margin-bottom: 4px;
             display: block;
@@ -120,35 +127,35 @@
 
     <div class="card">
         <div class="card-header">
-            <h1>Tecnical Data Sheet</h1>
+            <h1>TECHNICAL DATA SHEET</h1>
             <span class="badge-id" id="plant-id">S/N</span>
         </div>
 
         <div class="card-body">
 
             <div class="info-group">
-                <span class="label">Mycorrhizae Consortium</span>
+                <span class="label">MYCORRHIZAE CONSORTIUM</span>
                 <div class="value" id="plant-consorcio">❌</div>
             </div>
             <div class="info-group">
-                <span class="label">Pre-infection Height(cm) </span>
+                <span class="label">PRE-INFECTION HEIGHT (cm)</span>
                 <div class="value" id="plant-altura">No especificada</div>
             </div>
             <div class="info-group">
-                <span class="label">Pre-infection Functional Leaves(cm)</span>
+                <span class="label">PRE-INFECTION FUNCTIONAL LEAVES (cm)</span>
                 <div class="value" id="plant-hojas">No especificada</div>
             </div>
             <div class="info-group">
-                <span class="label">Location</span>
+                <span class="label">LOCATION</span>
                 <div class="value" id="plant-ubicacion">Mesa</div>
             </div>
             <div class="info-group">
-                <span class="label">Link For More Details</span>
+                <span class="label">LINK FOR MORE DETAILS</span>
                 <div class="value" id="plant-descripcion">Sin descripción disponible.</div>
             </div>
             <div class="info-group">
-                <span class="label">Phytosanitary Status</span>
-                <div id="plant-estado" class="status-box">Cargando estado...</div>
+                <span class="label">PHYTOSANITARY STATUS</span>
+                <div id="plant-estado" class="status-box">Loading...</div>
             </div>
         </div>
     </div>
@@ -168,9 +175,11 @@
         // 2. Inyectar datos en el HTML si existen
         if (id) document.getElementById('plant-id').textContent = `${id}`;
         if (consorcio) document.getElementById('plant-consorcio').textContent = consorcio;
-        // if (descripcion) document.getElementById('plant-descripcion').textContent = descripcion;
         if (altura) document.getElementById('plant-altura').textContent = altura;
+        if (hojas) document.getElementById('plant-hojas').textContent = hojas;
+        if (ubicacion) document.getElementById('plant-ubicacion').textContent = ubicacion;
         //3. Lógica del enlace a drive
+        const descripcionElement = document.getElementById('plant-descripcion');
         if (descripcion) {
           descripcionElement.innerHTML = `
             <a href="${descripcion}" target="_blank" rel="noopener noreferrer">
@@ -180,7 +189,7 @@
         } else {
           descripcionElement.textContent = "not available.";
         }
-        
+
         // 4. Lógica del estado de infección
         const estadoElemento = document.getElementById('plant-estado');
 
