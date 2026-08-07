@@ -174,11 +174,19 @@
 
         // 2. Inyectar datos en el HTML si existen
         if (id) document.getElementById('plant-id').textContent = `${id}`;
-        if (consorcio) document.getElementById('plant-consorcio').textContent = consorcio;
         if (altura) document.getElementById('plant-altura').textContent = altura;
         if (hojas) document.getElementById('plant-hojas').textContent = hojas;
         if (ubicacion) document.getElementById('plant-ubicacion').textContent = ubicacion;
-        //3. Lógica del enlace a drive
+        // 3. Lógica de consorcio
+        const consorcioElement = document.getElementById('plant-consorcio');
+        if (consorcio) {
+            if (consorcio.toUpperCase() === 'NO') {
+                consorcioElement.textContent = '❌';
+            } else {
+                consorcioElement.textContent = consorcio;
+            }
+        }
+        //4. Lógica del enlace a drive
         const descripcionElement = document.getElementById('plant-descripcion');
         if (descripcion) {
           descripcionElement.innerHTML = `
@@ -190,7 +198,7 @@
           descripcionElement.textContent = "not available.";
         }
 
-        // 4. Lógica del estado de infección
+        // 5. Lógica del estado de infección
         const estadoElemento = document.getElementById('plant-estado');
 
         if (infectada && infectada.toLowerCase() === 'si') {
