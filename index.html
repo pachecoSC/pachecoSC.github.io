@@ -38,7 +38,7 @@
         }
 
         .card-header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: linear-gradient(135deg, #1883ff 0%, #2a5298 100%);
             color: white;
             padding: 24px;
             text-align: center;
@@ -53,11 +53,13 @@
         .badge-id {
             display: inline-block;
             background: rgba(255, 255, 255, 0.2);
-            padding: 4px 12px;
+            padding: 4px 10px;
             border-radius: 20px;
-            font-size: 0.85rem;
-            margin-top: 8px;
+            font-size: 2rem;
+            margin-top: 10px;
             font-weight: bold;
+            width: 10rem;
+            height: 2.5rem;
         }
 
         .card-body {
@@ -118,28 +120,34 @@
 
     <div class="card">
         <div class="card-header">
-            <h1>Ficha de Monitoreo</h1>
-            <span class="badge-id" id="plant-id">ID: S/N</span>
+            <h1>Tecnical Data Sheet</h1>
+            <span class="badge-id" id="plant-id">S/N</span>
         </div>
-        
+
         <div class="card-body">
-            <div class="info-group">
-                <span class="label">Origen / Sacada de</span>
-                <div class="value" id="plant-origen">No especificado</div>
-            </div>
 
             <div class="info-group">
-                <span class="label">Consorcio</span>
-                <div class="value" id="plant-consorcio">No especificado</div>
+                <span class="label">Mycorrhizae Consortium</span>
+                <div class="value" id="plant-consorcio">❌</div>
             </div>
-
             <div class="info-group">
-                <span class="label">Descripción</span>
+                <span class="label">Pre-infection Height</span>
+                <div class="value" id="plant-altura">No especificada</div>
+            </div>
+            <div class="info-group">
+                <span class="label">Pre-infection Functional Leaves</span>
+                <div class="value" id="plant-hojas">No especificada</div>
+            </div>
+            <div class="info-group">
+                <span class="label">Location</span>
+                <div class="value" id="plant-ubicacion">Mesa</div>
+            </div>
+            <div class="info-group">
+                <span class="label">Link For More Details</span>
                 <div class="value" id="plant-descripcion">Sin descripción disponible.</div>
             </div>
-
             <div class="info-group">
-                <span class="label">Estado Sanitario</span>
+                <span class="label">Phytosanitary Status</span>
                 <div id="plant-estado" class="status-box">Cargando estado...</div>
             </div>
         </div>
@@ -148,22 +156,24 @@
     <script>
         // 1. Leer parámetros de la URL
         const params = new URLSearchParams(window.location.search);
-        
+
         const id = params.get('id');
         const descripcion = params.get('desc');
         const consorcio = params.get('cons');
-        const origen = params.get('ori');
+        const altura = params.get('alt');
+        const hojas = params.get('hojas');
+        const ubicacion = params.get('ubi');
         const infectada = params.get('infect'); // Espera "si" o "no"
 
         // 2. Inyectar datos en el HTML si existen
-        if (id) document.getElementById('plant-id').textContent = `ID: ${id}`;
-        if (origen) document.getElementById('plant-origen').textContent = origen;
+        if (id) document.getElementById('plant-id').textContent = `${id}`;
         if (consorcio) document.getElementById('plant-consorcio').textContent = consorcio;
         if (descripcion) document.getElementById('plant-descripcion').textContent = descripcion;
+        if (altura) document.getElementById('plant-altura').textContent = altura;
 
         // 3. Lógica lógica del estado de infección
         const estadoElemento = document.getElementById('plant-estado');
-        
+
         if (infectada && infectada.toLowerCase() === 'si') {
             estadoElemento.textContent = "⚠️ INFECTADA";
             estadoElemento.className = "status-box status-infected";
